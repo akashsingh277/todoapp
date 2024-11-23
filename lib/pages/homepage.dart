@@ -2,6 +2,7 @@ import 'package:firstapp/util/dialogbox.dart';
 import 'package:firstapp/util/todotile.dart';
 import 'package:flutter/material.dart';
 class HomePage extends StatefulWidget {
+  
   const HomePage({super.key});
 
   @override
@@ -9,6 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _controller=TextEditingController();
   List todolist=[
     ["Do Exercise",false],
      ["Sleep",false],
@@ -18,11 +20,22 @@ setState(() {
   todolist[index][1]=!todolist[index][1];
 });
   }
+  void saveNewTask(){
+    setState(() {
+      todolist.add([_controller.text,false]);
+      _controller.clear(); 
+    });
+    Navigator.of(context).pop();
+  }
   void createNewTask(){
     showDialog(
       context: context,
        builder: (context){
-        return DialogBox();
+        return DialogBox(
+          controller:_controller ,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
 
        },);
   }
